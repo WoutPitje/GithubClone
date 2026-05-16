@@ -10,6 +10,7 @@ import path from 'node:path'
 const HMR_PORT = process.env.HMR_PORT ? Number(process.env.HMR_PORT) : undefined
 
 export default defineConfig({
+  base: process.env.BASE_PATH || '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') },
