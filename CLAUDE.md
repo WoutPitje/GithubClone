@@ -51,3 +51,8 @@ If no `supabase/` directory exists, treat this as a frontend-only project. Don't
 - 2-space indent, double quotes, semicolons. No Prettier config — defaults are fine.
 - Keep components small. Prefer composition over prop drilling.
 - Comment only the non-obvious *why*. Don't narrate *what* the code does.
+
+<!-- supabase-scaffold-pointer -->
+## Supabase backend (connected)
+
+This project has a Supabase backend wired up. See `supabase/AGENTS.md` for backend conventions, edge function patterns, RLS rules, and the two client entry points (`src/integrations/supabase/client.ts` for browser, `src/integrations/supabase/admin.server.ts` for server).
