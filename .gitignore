@@ -1,0 +1,9 @@
+node_modules
+dist
+*.tsbuildinfo
+.DS_Store
+*.log
+# .env is committed on purpose — it holds public (anon) Supabase creds
+# that the prod build needs baked into the bundle. .env.local stays
+# ignored so devs can override locally.
+.env.local
