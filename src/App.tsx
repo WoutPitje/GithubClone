@@ -8,10 +8,15 @@ import HomePage from "@/pages/Home";
 import ConversationPage from "@/pages/Conversation";
 import ProfilePage from "@/pages/Profile";
 
+// import.meta.env.BASE_URL is Vite's base path (set in vite.config.ts). On
+// GitHub Pages this becomes "/<repo>/"; React Router needs that as `basename`
+// or every route resolves under the wrong prefix.
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 export default function App() {
   return (
     <SessionProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <Routes>
           <Route path="/auth" element={<GuestOnly><AuthPage /></GuestOnly>} />
           <Route path="/auth/verify" element={<GuestOnly><VerifyEmailPage /></GuestOnly>} />
