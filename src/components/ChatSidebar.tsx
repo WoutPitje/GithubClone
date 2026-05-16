@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { LogOut, MessageSquarePlus, Search, User as UserIcon } from "lucide-react";
+import { LogOut, MessageSquarePlus, Search, Settings2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { listMyConversations } from "@/lib/chat-api";
@@ -38,7 +38,6 @@ export function ChatSidebar({ className }: { className?: string }) {
     refresh();
   }, [refresh]);
 
-  // Realtime: when new messages or participant rows come in, refresh the list.
   useEffect(() => {
     if (!user) return;
     const channel = supabase
@@ -70,46 +69,80 @@ export function ChatSidebar({ className }: { className?: string }) {
   if (!user) return null;
 
   return (
-    <aside className={cn("flex flex-col bg-card border-r min-h-0", className)}>
-      <header className="flex items-center justify-between px-4 h-14 border-b bg-card">
-        <h1 className="font-semibold text-base">Chats</h1>
+    <aside className={cn("flex flex-col min-h-0 bg-[var(--wa-surface)]", className)}>
+      <header className="flex items-center justify-between px-5 pt-5 pb-3">
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-semibold tracking-tight">Chats</h1>
+        </div>
         <div className="flex items-center gap-1">
-          <Button asChild variant="ghost" size="icon" title="Profile">
-            <Link to="/me"><UserIcon className="size-5" /></Link>
-          </Button>
-          <Button variant="ghost" size="icon" title="New chat" onClick={() => setNewOpen(true)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            title="New chat"
+            onClick={() => setNewOpen(true)}
+            className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+          >
             <MessageSquarePlus className="size-5" />
           </Button>
-          <Button variant="ghost" size="icon" title="Sign out" onClick={signOut}>
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            title="Profile"
+            className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+          >
+            <Link to="/me"><Settings2 className="size-5" /></Link>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            title="Sign out"
+            onClick={signOut}
+            className="rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+          >
             <LogOut className="size-5" />
           </Button>
         </div>
       </header>
 
-      <div className="p-2 border-b">
+      <div className="px-4 pb-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
           <Input
-            placeholder="Search or start new chat"
-            className="pl-9 bg-muted/40 border-0"
+            placeholder="Search chats"
+            className="pl-10 h-10 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border-0 focus-visible:ring-2 focus-visible:ring-[var(--wa-accent)]/40"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto min-h-0">
+      <div className="flex-1 overflow-y-auto min-h-0 scrollbar-soft px-2 pb-3">
         {loading ? (
-          <p className="text-sm text-muted-foreground p-6 text-center">Loading…</p>
+          <div className="space-y-2 px-2 pt-2">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className="flex items-center gap-3 p-3 animate-pulse">
+                <div className="size-12 rounded-full bg-black/5 dark:bg-white/5" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 w-2/5 rounded-full bg-black/5 dark:bg-white/5" />
+                  <div className="h-3 w-3/5 rounded-full bg-black/5 dark:bg-white/5" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : filtered.length === 0 ? (
-          <div className="p-6 text-center text-sm text-muted-foreground">
-            <p>No chats yet.</p>
+          <div className="p-8 text-center">
+            <div className="size-12 mx-auto rounded-2xl accent-grad opacity-80 mb-3 flex items-center justify-center text-white">
+              <MessageSquarePlus className="size-6" />
+            </div>
+            <p className="text-sm font-medium">No conversations yet</p>
+            <p className="text-xs text-muted-foreground mt-1">Start a new chat to say hi.</p>
             <Button
               variant="link"
-              className="text-[#128C7E]"
+              className="text-[var(--wa-accent-strong)] mt-2"
               onClick={() => setNewOpen(true)}
             >
-              Start a conversation
+              New chat
             </Button>
           </div>
         ) : (
@@ -118,29 +151,31 @@ export function ChatSidebar({ className }: { className?: string }) {
               key={s.conversation.id}
               to={`/c/${s.conversation.id}`}
               className={cn(
-                "flex items-center gap-3 px-3 py-3 border-b border-border/50 hover:bg-accent transition-colors",
-                activeId === s.conversation.id && "bg-accent",
+                "flex items-center gap-3 px-3 py-3 rounded-2xl transition-colors",
+                activeId === s.conversation.id
+                  ? "bg-black/[0.05] dark:bg-white/[0.06]"
+                  : "hover:bg-black/[0.03] dark:hover:bg-white/[0.04]",
               )}
             >
-              <UserAvatar profile={s.other} className="size-12" />
+              <UserAvatar profile={s.other} className="size-12" showPresence online />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-medium truncate">
                     {s.other.display_name ?? s.other.email ?? "Unknown"}
                   </span>
                   <span className={cn(
-                    "text-[11px] shrink-0",
-                    s.unreadCount > 0 ? "text-[#25D366] font-medium" : "text-muted-foreground",
+                    "text-[11px] shrink-0 font-medium",
+                    s.unreadCount > 0 ? "text-[var(--wa-accent-strong)]" : "text-muted-foreground",
                   )}>
                     {formatChatTimestamp(s.conversation.last_message_at)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-2 mt-0.5">
                   <span className="text-sm text-muted-foreground truncate">
-                    {s.conversation.last_message_preview ?? "No messages yet"}
+                    {s.conversation.last_message_preview ?? "Say hi 👋"}
                   </span>
                   {s.unreadCount > 0 && (
-                    <span className="bg-[#25D366] text-white text-[11px] font-medium rounded-full min-w-5 h-5 px-1.5 flex items-center justify-center shrink-0">
+                    <span className="accent-grad text-white text-[11px] font-semibold rounded-full min-w-5 h-5 px-1.5 flex items-center justify-center shrink-0 shadow-sm">
                       {s.unreadCount > 99 ? "99+" : s.unreadCount}
                     </span>
                   )}

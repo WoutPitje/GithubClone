@@ -32,16 +32,24 @@ export function MessageBubble({
     };
   }, [message.attachment_path]);
 
+  const hasImage = !!message.attachment_path;
+  const hasText = !!message.body;
+
   return (
     <div className={cn("flex w-full", mine ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-[78%] sm:max-w-[65%] rounded-lg px-2 py-1.5 shadow-sm relative",
-          mine ? "bubble-out rounded-tr-none" : "bubble-in rounded-tl-none",
+          "max-w-[78%] sm:max-w-[60%] rounded-3xl px-3.5 py-2 relative shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
+          mine ? "bubble-out rounded-br-md" : "bubble-in rounded-bl-md",
         )}
       >
-        {message.attachment_path && (
-          <div className="mb-1 rounded-md overflow-hidden bg-black/5 min-h-32 flex items-center justify-center">
+        {hasImage && (
+          <div
+            className={cn(
+              "rounded-2xl overflow-hidden bg-black/5 min-h-32 flex items-center justify-center",
+              hasText ? "mb-1.5" : "",
+            )}
+          >
             {imgLoading || !imgUrl ? (
               <Loader2 className="size-5 animate-spin text-muted-foreground" />
             ) : (
@@ -54,20 +62,20 @@ export function MessageBubble({
             )}
           </div>
         )}
-        {message.body && (
-          <p className="text-sm whitespace-pre-wrap break-words pr-12 pl-1 dark:text-white">
+        {hasText && (
+          <p className="text-[14.5px] leading-snug whitespace-pre-wrap break-words pr-14 pl-0.5 text-foreground">
             {message.body}
           </p>
         )}
-        <div className="flex items-center justify-end gap-1 -mt-1 -mb-0.5 -mr-0.5 pl-2">
-          <span className="text-[10px] text-muted-foreground">
+        <div className="absolute right-2.5 bottom-1 flex items-center gap-1">
+          <span className="text-[10px] text-muted-foreground/80">
             {formatMessageTime(message.created_at)}
           </span>
           {mine && (
             readByPeer ? (
-              <CheckCheck className="size-3.5 text-[#34B7F1]" />
+              <CheckCheck className="size-3.5 text-[var(--wa-tick-read)]" />
             ) : (
-              <Check className="size-3.5 text-muted-foreground" />
+              <Check className="size-3.5 text-muted-foreground/70" />
             )
           )}
         </div>

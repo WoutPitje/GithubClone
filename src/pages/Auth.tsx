@@ -26,20 +26,25 @@ export default function AuthPage() {
   const [tab, setTab] = useState<"signin" | "signup">("signin");
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[oklch(0.97_0.01_140)]">
-      <div className="w-full max-w-md">
-        <div className="flex flex-col items-center gap-3 mb-6">
-          <div className="size-14 rounded-2xl bg-[#25D366] flex items-center justify-center text-white">
-            <MessageCircle className="size-7" />
+    <div className="min-h-screen flex items-center justify-center p-6 chat-bg relative overflow-hidden">
+      <div className="w-full max-w-md relative z-10">
+        <div className="flex flex-col items-center gap-3 mb-8">
+          <div className="relative mb-1">
+            <div className="absolute inset-0 accent-grad blur-2xl opacity-50 rounded-full" />
+            <div className="relative size-16 rounded-2xl accent-grad flex items-center justify-center text-white shadow-xl shadow-[var(--wa-accent)]/30">
+              <MessageCircle className="size-8" strokeWidth={1.75} />
+            </div>
           </div>
-          <h1 className="text-2xl font-semibold">WhatsClone</h1>
-          <p className="text-sm text-muted-foreground">Simple, fast messaging.</p>
+          <h1 className="text-3xl font-semibold tracking-tight">
+            <span className="accent-grad-text">WhatsClone</span>
+          </h1>
+          <p className="text-sm text-muted-foreground">Simple, fast, real-time messaging.</p>
         </div>
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign in</TabsTrigger>
-            <TabsTrigger value="signup">Create account</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 rounded-full p-1 bg-black/[0.04] dark:bg-white/[0.06] h-11">
+            <TabsTrigger value="signin" className="rounded-full data-[state=active]:bg-card data-[state=active]:shadow-sm">Sign in</TabsTrigger>
+            <TabsTrigger value="signup" className="rounded-full data-[state=active]:bg-card data-[state=active]:shadow-sm">Create account</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
             <SignInForm />
@@ -70,7 +75,7 @@ function SignInForm() {
   }
 
   return (
-    <div className="bg-card border rounded-2xl p-6 mt-4">
+    <div className="glass border border-black/5 dark:border-white/10 rounded-3xl p-6 mt-4 shadow-xl shadow-black/5">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -95,7 +100,7 @@ function SignInForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full bg-[#25D366] hover:bg-[#1ebd5a]" disabled={form.formState.isSubmitting}>
+          <Button type="submit" className="w-full accent-grad text-white rounded-full h-11 shadow-md shadow-[var(--wa-accent)]/30 hover:opacity-90" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && <Loader2 className="size-4 animate-spin" />}
             Sign in
           </Button>
@@ -135,7 +140,7 @@ function SignUpForm() {
   }
 
   return (
-    <div className="bg-card border rounded-2xl p-6 mt-4">
+    <div className="glass border border-black/5 dark:border-white/10 rounded-3xl p-6 mt-4 shadow-xl shadow-black/5">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -171,7 +176,7 @@ function SignUpForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full bg-[#25D366] hover:bg-[#1ebd5a]" disabled={form.formState.isSubmitting}>
+          <Button type="submit" className="w-full accent-grad text-white rounded-full h-11 shadow-md shadow-[var(--wa-accent)]/30 hover:opacity-90" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && <Loader2 className="size-4 animate-spin" />}
             Create account
           </Button>

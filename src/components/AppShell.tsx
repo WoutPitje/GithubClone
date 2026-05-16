@@ -6,10 +6,10 @@ export function AppShell() {
   const { id } = useParams<{ id: string }>();
   const hasActive = !!id;
   return (
-    <div className="h-screen w-screen flex bg-background overflow-hidden">
+    <div className="h-screen w-screen flex bg-[var(--wa-surface-2)] overflow-hidden">
       <ChatSidebar
         className={cn(
-          "w-full md:w-[360px] lg:w-[420px]",
+          "w-full md:w-[360px] lg:w-[400px] md:border-r md:border-black/5 dark:md:border-white/5",
           hasActive && "hidden md:flex",
         )}
       />

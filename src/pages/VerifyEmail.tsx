@@ -7,16 +7,19 @@ export default function VerifyEmailPage() {
   const email = params.get("email") ?? "your email";
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[oklch(0.97_0.01_140)]">
-      <div className="w-full max-w-md bg-card border rounded-2xl p-8 text-center">
-        <div className="size-14 rounded-2xl bg-[#25D366] flex items-center justify-center text-white mx-auto mb-4">
-          <Mail className="size-7" />
+    <div className="min-h-screen flex items-center justify-center p-6 chat-bg">
+      <div className="w-full max-w-md glass border border-black/5 dark:border-white/10 rounded-3xl p-8 text-center shadow-xl shadow-black/5">
+        <div className="relative mx-auto mb-5 size-16">
+          <div className="absolute inset-0 accent-grad blur-2xl opacity-50 rounded-full" />
+          <div className="relative size-16 rounded-2xl accent-grad flex items-center justify-center text-white shadow-lg shadow-[var(--wa-accent)]/30">
+            <Mail className="size-8" strokeWidth={1.75} />
+          </div>
         </div>
-        <h1 className="text-xl font-semibold mb-2">Check your inbox</h1>
-        <p className="text-sm text-muted-foreground mb-6">
-          We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account, then come back to sign in.
+        <h1 className="text-xl font-semibold tracking-tight mb-2">Check your inbox</h1>
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+          We sent a confirmation link to <strong className="text-foreground">{email}</strong>. Click it to activate your account, then come back to sign in.
         </p>
-        <Button asChild className="w-full bg-[#25D366] hover:bg-[#1ebd5a]">
+        <Button asChild className="w-full accent-grad text-white rounded-full h-11 shadow-md shadow-[var(--wa-accent)]/30 hover:opacity-90">
           <Link to="/auth">Back to sign in</Link>
         </Button>
       </div>

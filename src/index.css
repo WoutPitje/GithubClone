@@ -120,41 +120,90 @@
   body { overscroll-behavior-y: none; }
 }
 
-/* WhatsApp-style palette */
+/* 2026 chat palette — deep emerald accent, soft surfaces, glass overlays. */
 :root {
-  --wa-green: #25D366;
-  --wa-green-dark: #128C7E;
-  --wa-teal: #075E54;
-  --wa-bg: #ECE5DD;
-  --wa-bubble-out: #DCF8C6;
+  --wa-accent: #00A884;
+  --wa-accent-strong: #008069;
+  --wa-accent-soft: oklch(0.96 0.04 165);
+  --wa-tick-read: #53BDEB;
+
+  --wa-surface: oklch(0.985 0.005 150);
+  --wa-surface-2: oklch(0.965 0.008 155);
+  --wa-bubble-out: oklch(0.94 0.05 162);
   --wa-bubble-in: #FFFFFF;
-  --wa-tick-read: #34B7F1;
+  --wa-bubble-border: oklch(0.94 0.008 150);
 }
 
 .dark {
-  --wa-bg: #0B141A;
-  --wa-bubble-out: #005C4B;
-  --wa-bubble-in: #1F2C33;
+  --wa-accent: #00C09A;
+  --wa-accent-strong: #00A884;
+  --wa-accent-soft: oklch(0.32 0.05 165);
+
+  --wa-surface: oklch(0.16 0.012 220);
+  --wa-surface-2: oklch(0.13 0.015 225);
+  --wa-bubble-out: oklch(0.32 0.06 165);
+  --wa-bubble-in: oklch(0.21 0.014 220);
+  --wa-bubble-border: oklch(1 0 0 / 6%);
 }
 
 .chat-bg {
-  background-color: var(--wa-bg);
+  position: relative;
+  background-color: var(--wa-surface-2);
   background-image:
-    radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
-    radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
-  background-size: 24px 24px, 36px 36px;
-  background-position: 0 0, 12px 18px;
+    radial-gradient(60rem 40rem at 12% -10%, oklch(0.97 0.06 165 / 0.55), transparent 70%),
+    radial-gradient(50rem 35rem at 110% 110%, oklch(0.96 0.05 200 / 0.45), transparent 70%);
 }
 
 .dark .chat-bg {
+  background-color: var(--wa-surface-2);
   background-image:
-    radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+    radial-gradient(60rem 40rem at 12% -10%, oklch(0.3 0.08 165 / 0.35), transparent 70%),
+    radial-gradient(50rem 35rem at 110% 110%, oklch(0.28 0.06 230 / 0.35), transparent 70%);
 }
 
 .bubble-out {
   background-color: var(--wa-bubble-out);
+  border: 1px solid var(--wa-bubble-border);
 }
 .bubble-in {
   background-color: var(--wa-bubble-in);
+  border: 1px solid var(--wa-bubble-border);
 }
+
+.dark .bubble-in,
+.dark .bubble-out {
+  border-color: oklch(1 0 0 / 5%);
+}
+
+.glass {
+  background-color: color-mix(in oklch, var(--wa-surface) 70%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+}
+
+.chip {
+  background-color: color-mix(in oklch, var(--wa-surface) 80%, transparent);
+  backdrop-filter: saturate(1.4) blur(8px);
+  -webkit-backdrop-filter: saturate(1.4) blur(8px);
+}
+
+.accent-grad {
+  background-image: linear-gradient(135deg, var(--wa-accent) 0%, var(--wa-accent-strong) 100%);
+}
+
+.accent-grad-text {
+  background-image: linear-gradient(135deg, var(--wa-accent) 0%, var(--wa-accent-strong) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.scrollbar-soft::-webkit-scrollbar { width: 10px; height: 10px; }
+.scrollbar-soft::-webkit-scrollbar-thumb {
+  background-color: oklch(0 0 0 / 0.08);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.scrollbar-soft:hover::-webkit-scrollbar-thumb { background-color: oklch(0 0 0 / 0.18); background-clip: padding-box; }
+.dark .scrollbar-soft::-webkit-scrollbar-thumb { background-color: oklch(1 0 0 / 0.1); background-clip: padding-box; }

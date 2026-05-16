@@ -97,12 +97,12 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-background">
-      <header className="h-14 bg-[#075E54] text-white flex items-center gap-3 px-2 sm:px-4 shrink-0">
-        <Link to="/" className="p-2 -ml-1 rounded hover:bg-white/10">
+    <div className="flex flex-col h-full min-h-0 bg-[var(--wa-surface-2)]">
+      <header className="h-16 glass border-b border-black/5 dark:border-white/10 flex items-center gap-3 px-3 sm:px-5 shrink-0 sticky top-0 z-10">
+        <Link to="/" className="p-2 -ml-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10">
           <ArrowLeft className="size-5" />
         </Link>
-        <h1 className="font-medium">Profile</h1>
+        <h1 className="font-semibold text-[15px] tracking-tight">Profile</h1>
       </header>
 
       <div className="flex-1 overflow-y-auto p-6 max-w-xl w-full mx-auto">
@@ -113,7 +113,7 @@ export default function ProfilePage() {
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={uploading}
-              className="absolute -bottom-1 -right-1 size-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-md disabled:opacity-60"
+              className="absolute -bottom-1 -right-1 size-10 rounded-full accent-grad text-white flex items-center justify-center shadow-lg shadow-[var(--wa-accent)]/30 disabled:opacity-60"
               title="Change avatar"
             >
               {uploading ? <Loader2 className="size-4 animate-spin" /> : <Camera className="size-4" />}
@@ -155,7 +155,7 @@ export default function ProfilePage() {
             />
             <Button
               type="submit"
-              className="bg-[#25D366] hover:bg-[#1ebd5a]"
+              className="accent-grad text-white rounded-full h-11 px-6 shadow-md shadow-[var(--wa-accent)]/30 hover:opacity-90"
               disabled={form.formState.isSubmitting}
             >
               Save
