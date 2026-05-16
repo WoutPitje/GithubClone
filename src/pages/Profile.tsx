@@ -76,7 +76,7 @@ export default function ProfilePage() {
       const path = `${user.id}/avatar-${Date.now()}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("avatars")
-        .upload(path, f, { upsert: true, contentType: f.type });
+        .upload(path, f, { upsert: false, contentType: f.type });
       if (upErr) throw upErr;
       const { error: profErr } = await supabase
         .from("profiles")
