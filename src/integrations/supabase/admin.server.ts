@@ -5,6 +5,8 @@
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
+declare const process: { env: Record<string, string | undefined> };
+
 let cached: SupabaseClient | null = null;
 
 export function getAdminClient(): SupabaseClient {
