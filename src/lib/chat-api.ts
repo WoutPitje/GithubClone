@@ -110,22 +110,20 @@ export async function getOrCreateDirectConversation(_myId: string, otherId: stri
 }
 
 export async function getConversationPeer(myId: string, conversationId: string): Promise<Profile | null> {
-  const { data, error } = await supabase
+  const { data: part, error } = await supabase
     .from("conversation_participants")
-    .select("user_id, profiles:profiles!conversation_participants_user_id_fkey(id,email,display_name,avatar_url,status_text,last_seen_at)")
+    .select("user_id")
     .eq("conversation_id", conversationId)
     .neq("user_id", myId)
     .maybeSingle();
   if (error) throw error;
-  if (!data) return null;
-  // The PostgREST join shape — fall back to a plain profiles lookup if relation isn't resolved.
-  const joined = (data as { profiles?: Profile | Profile[] }).profiles;
-  if (joined) return Array.isArray(joined) ? joined[0] : joined;
-  const { data: p } = await supabase
+  if (!part) return null;
+  const { data: p, error: e2 } = await supabase
     .from("profiles")
     .select("id,email,display_name,avatar_url,status_text,last_seen_at")
-    .eq("id", (data as { user_id: string }).user_id)
+    .eq("id", part.user_id)
     .single();
+  if (e2) throw e2;
   return (p as Profile) ?? null;
 }
 
