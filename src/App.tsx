@@ -1,24 +1,27 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Sparkles } from "lucide-react"
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { SessionProvider } from "@/hooks/use-session";
+import { AuthGate, GuestOnly } from "@/components/AuthGate";
+import { AppShell } from "@/components/AppShell";
+import AuthPage from "@/pages/Auth";
+import VerifyEmailPage from "@/pages/VerifyEmail";
+import HomePage from "@/pages/Home";
+import ConversationPage from "@/pages/Conversation";
+import ProfilePage from "@/pages/Profile";
 
 export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-8">
-      <Card className="max-w-md w-full">
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Sparkles className="size-5" />
-            <CardTitle>Welcome</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
-          <p className="text-muted-foreground text-sm">
-            This is your starter app. Ask the AI in the chat to change anything.
-          </p>
-          <Button>Get started</Button>
-        </CardContent>
-      </Card>
-    </div>
-  )
+    <SessionProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/auth" element={<GuestOnly><AuthPage /></GuestOnly>} />
+          <Route path="/auth/verify" element={<GuestOnly><VerifyEmailPage /></GuestOnly>} />
+          <Route element={<AuthGate><AppShell /></AuthGate>}>
+            <Route index element={<HomePage />} />
+            <Route path="c/:id" element={<ConversationPage />} />
+          </Route>
+          <Route path="/me" element={<AuthGate><ProfilePage /></AuthGate>} />
+        </Routes>
+      </BrowserRouter>
+    </SessionProvider>
+  );
 }

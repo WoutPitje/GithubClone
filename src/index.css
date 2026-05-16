@@ -116,4 +116,45 @@
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground; }
+  html, body, #root { height: 100%; }
+  body { overscroll-behavior-y: none; }
+}
+
+/* WhatsApp-style palette */
+:root {
+  --wa-green: #25D366;
+  --wa-green-dark: #128C7E;
+  --wa-teal: #075E54;
+  --wa-bg: #ECE5DD;
+  --wa-bubble-out: #DCF8C6;
+  --wa-bubble-in: #FFFFFF;
+  --wa-tick-read: #34B7F1;
+}
+
+.dark {
+  --wa-bg: #0B141A;
+  --wa-bubble-out: #005C4B;
+  --wa-bubble-in: #1F2C33;
+}
+
+.chat-bg {
+  background-color: var(--wa-bg);
+  background-image:
+    radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px;
+  background-position: 0 0, 12px 18px;
+}
+
+.dark .chat-bg {
+  background-image:
+    radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+}
+
+.bubble-out {
+  background-color: var(--wa-bubble-out);
+}
+.bubble-in {
+  background-color: var(--wa-bubble-in);
 }

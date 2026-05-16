@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import path from 'node:path'
 
 // HMR_PORT is set by the Locable control plane to the *host*-side port
@@ -11,7 +12,44 @@ const HMR_PORT = process.env.HMR_PORT ? Number(process.env.HMR_PORT) : undefined
 
 export default defineConfig({
   base: process.env.BASE_PATH || '/',
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      // SW would break Vite HMR; only register in the prod build.
+      devOptions: { enabled: false },
+      includeAssets: ['icon.svg'],
+      manifest: {
+        name: 'WhatsClone',
+        short_name: 'WhatsClone',
+        description: 'A WhatsApp-style messaging PWA.',
+        theme_color: '#075E54',
+        background_color: '#ECE5DD',
+        display: 'standalone',
+        orientation: 'portrait',
+        start_url: '/',
+        scope: '/',
+        icons: [
+          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,ico}'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) =>
+              url.pathname.startsWith('/storage/v1/object/public/avatars/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'avatars',
+              expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 7 },
+            },
+          },
+        ],
+      },
+    }),
+  ],
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') },
   },
